@@ -41,17 +41,17 @@ mvn spring-boot:run
 ```bash
 docker run --name marchesinPOS -d -p 8080:8080 backend_cars
 ```
-### Obs: Visite a URL do Projeto no DockerHub e e configura qual arquiteutra voce deve rodar
+<!-- ### Obs: Visite a URL do Projeto no DockerHub e e configura qual arquiteutra voce deve rodar
 <!-- - [leogloriainfnet/cars](https://hub.docker.com/repository/docker/leogloriainfnet/cars/general) -->
-
+<!-- 
 ## 📦 Testando
 <!-- Na pasta [collections](https://github.com/leoinfnet/trabalho_final_react_noite/tree/main/collections) existem dois arquivos para serem importados tanto no postman quanto no insomnia com exemplos de todas as urls.
 
-
+ -->
 
 ---
 ⌨️ com ❤️ por [Leonardo Gloria] 😊 -->
 
-
+ -->
 
 
