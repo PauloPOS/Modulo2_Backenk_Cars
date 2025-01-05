@@ -17,6 +17,6 @@ public class Carro {
     private String cor;
     private int cavalosDePotencia;
     private String fabricante;
-    private String pais;
+    private String pais_origem;
 
 }

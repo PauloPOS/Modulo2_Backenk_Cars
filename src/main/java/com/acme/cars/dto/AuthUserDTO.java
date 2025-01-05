@@ -1,4 +1,9 @@
 package com.acme.cars.dto;
 
-public record AuthUserDTO(String email,String password){}
+import lombok.Data;
 
+@Data
+public class AuthUserDTO {
+    private String email;
+    private String password;
+}

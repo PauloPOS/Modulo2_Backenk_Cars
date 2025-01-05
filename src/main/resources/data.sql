@@ -1,6 +1,6 @@
 -- Inserir 130 carros, distribuídos entre 30 fabricantes (assumindo que os fabricantes com id de 1 a 30 já existem)
 
-INSERT INTO carro (modelo, ano, cor, cavalos_de_potencia, fabricante, pais) VALUES
+INSERT INTO carro (modelo, ano, cor, cavalos_de_potencia, fabricante, pais_origem) VALUES
 -- Fabricante 1 (Volkswagen)
 ('Golf', 2020, 'Preto', 150, 'Volkswagen', 'Alemanha'),
 ('Polo', 2019, 'Branco', 130, 'Volkswagen', 'Alemanha'),

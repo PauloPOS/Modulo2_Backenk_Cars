@@ -11,13 +11,33 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class SecurityService {
+
     private final UsuarioService usuarioService;
     private final TokenService tokenService;
+
+    /**
+     * Método para autenticar um usuário com base em email e senha.
+     *
+     * @param authUserDTO DTO contendo email e senha do usuário
+     * @return Token gerado para o usuário autenticado
+     * @throws AuthenticationException se as credenciais forem inválidas
+     */
     public String authenticate(AuthUserDTO authUserDTO) throws AuthenticationException {
-        Optional<Usuario> byEmail = usuarioService.findByEmail(authUserDTO.email());
-        if(byEmail.isEmpty()) throw new AuthenticationException("Usuario ou senha incorretos");
-        Usuario usuario = byEmail.get();
-        if(usuario.getPassword().equals(authUserDTO.password())) return tokenService.generateToken(usuario);
-        else throw new AuthenticationException("Usuario ou senha incorretos");
+        // Busca o usuário pelo email
+        Optional<Usuario> optionalUsuario = usuarioService.findByEmail(authUserDTO.getEmail());
+
+        if (optionalUsuario.isEmpty()) {
+            throw new AuthenticationException("Usuário ou senha incorretos");
+        }
+
+        Usuario usuario = optionalUsuario.get();
+
+        // Valida a senha
+        if (usuario.getPassword().equals(authUserDTO.getPassword())) {
+            // Gera e retorna o token para o usuário
+            return tokenService.generateToken(usuario);
+        } else {
+            throw new AuthenticationException("Usuário ou senha incorretos");
+        }
     }
 }

@@ -4,20 +4,37 @@ import com.acme.cars.exception.RecursoNaoEncontradoException;
 import com.acme.cars.model.Carro;
 import com.acme.cars.service.CarroService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
-@RestController  @RequestMapping("/api/carros")
-@RequiredArgsConstructor  @CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/api/carros")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*", exposedHeaders = "X-Total-Count")
 public class CarroController {
+
     private final CarroService carroService;
+
     @GetMapping
-    public ResponseEntity<List<Carro>> listarTodos() {
-        List<Carro> carros = carroService.listarTodos();
-        return ResponseEntity.ok(carros);
+    public ResponseEntity<List<Carro>> listarTodos(
+            @RequestParam(value = "page", defaultValue = "0") int page, // Página
+            @RequestParam(value = "size", defaultValue = "10") int size // Tamanho da página
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Carro> carrosPage = carroService.listarTodosPaginado(pageable); // Paginado
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(carrosPage.getTotalElements())); // Total de registros
+
+        return new ResponseEntity<>(carrosPage.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Carro> buscarPorId(@PathVariable Long id) {
         try {
@@ -53,4 +70,19 @@ public class CarroController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    // Endpoint para pesquisar carros por Fabricante
+    @GetMapping("/search")
+    public ResponseEntity<List<Carro>> listarPorFabricante(@RequestParam("fabricante") String fabricante) {
+        List<Carro> carros = carroService.listarPorFabricante(fabricante);
+        if (carros.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(carros);
+    }
+    @GetMapping("/fabricante")
+public ResponseEntity<List<String>> listarFabricante() {
+    List<String> fabricante = carroService.listarFabricante();
+    return ResponseEntity.ok(fabricante);
+}
 }

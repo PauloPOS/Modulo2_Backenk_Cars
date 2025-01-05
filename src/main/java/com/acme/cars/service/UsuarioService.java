@@ -11,13 +11,35 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
+
     private final UsuarioRepository usuarioRepository;
-    public Optional<Usuario> findByEmail(String email) {
-        Usuario byEmail = usuarioRepository.findByEmail(email);
-        if (byEmail == null) {return Optional.empty(); }
-        else { return Optional.of(byEmail); }
-    }
+
+    /**
+     * Busca todos os usuários cadastrados.
+     *
+     * @return Lista de usuários
+     */
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
+    }
+
+    /**
+     * Busca um usuário pelo email.
+     *
+     * @param email Email do usuário
+     * @return Optional do usuário encontrado
+     */
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+    /**
+     * Cadastra um novo usuário.
+     *
+     * @param usuario Objeto Usuario a ser salvo
+     * @return Usuario cadastrado
+     */
+    public Usuario cadastrarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 }

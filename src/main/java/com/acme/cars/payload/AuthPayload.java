@@ -1,4 +1,10 @@
 package com.acme.cars.payload;
 
-public record AuthPayload(String token) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class AuthPayload {
+    private String token;
 }

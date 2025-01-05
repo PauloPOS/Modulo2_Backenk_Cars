@@ -17,21 +17,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UsuarioController {
+
     private final UsuarioService usuarioService;
     private final SecurityService securityService;
+
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsuario() {
+    public ResponseEntity<List<Usuario>> getAllUsuarios() {
         return ResponseEntity.ok(usuarioService.findAll());
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> autenticate(@RequestBody AuthUserDTO authUserDTO){
-        try{
+    public ResponseEntity<?> authenticate(@RequestBody AuthUserDTO authUserDTO) {
+        try {
             String authenticate = securityService.authenticate(authUserDTO);
             return ResponseEntity.ok(new AuthPayload(authenticate));
-        }catch (AuthenticationException ex){
+        } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", "Usuario ou senha invalidos"));
+                    .body(Map.of("message", "Usuário ou senha inválidos"));
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioService.cadastrarUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 }
